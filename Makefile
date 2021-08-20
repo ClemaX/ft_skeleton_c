@@ -66,15 +66,15 @@ $(BINDIR)/$(NAME): $(OBJS) $(LIBS) | $(BINDIR)
 
 clean:
 	$(foreach dir, $(LIBDIRS),\
-		@echo "MK $(addprefix -C, $(LIBDIRS)) $@" && make -C $(dir) $@ && ):
-	@echo "RM $(OBJDIR)"
-	rm -rf "$(OBJDIR)"
+		echo "MK $(addprefix -C , $(dir)) $@" && make -C $(dir) $@ ; ):
+
+	@rm -r "$(OBJDIR)" 2>/dev/null && echo "RM $(OBJDIR)" || :
 
 fclean: clean
 	$(foreach dir, $(LIBDIRS),\
-		@echo "MK $(addprefix -C, $(LIBDIRS)) $@" && make -C $(dir) $@ && ):
-	@echo "RM $(BINDIR)/$(NAME)"
-	rm -f "$(BINDIR)/$(NAME)"
+		echo "MK $(addprefix -C, $(dir)) $@" && make -C $(dir) $@ ; ):
+
+	@rm "$(BINDIR)/$(NAME)" 2>/dev/null && echo "RM $(BINDIR)/$(NAME)" || :
 	@rmdir "$(BINDIR)" 2>/dev/null && echo "RM $(BINDIR)" || :
 
 re: fclean all
