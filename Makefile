@@ -3,6 +3,7 @@ NAME = skeleton
 # Compiler and linker
 CC = clang
 LD = clang
+AR = ar
 
 # Paths
 SRCDIR = src
@@ -33,10 +34,12 @@ CFLAGS = -Wall -Wextra -Werror $(INCS:%=-I%)
 DFLAGS = -MT $@ -MMD -MP -MF $(OBJDIR)/$*.d
 LDFLAGS = $(LIBDIRS:%=-L%)
 LDLIBS = $(LIBARS:lib%.a=-l%)
+ARFLAGS = -rcus
 
 # Compiling commands
 COMPILE.c = $(CC) $(DFLAGS) $(CFLAGS) -c
 COMPILE.o = $(LD) $(LDFLAGS)
+ARCHIVE.o = $(AR) $(ARFLAGS)
 
 all: $(BINDIR)/$(NAME)
 
@@ -63,7 +66,9 @@ include $(wildcard $(DEPS))
 $(BINDIR)/$(NAME): $(OBJS) $(LIBS) | $(BINDIR)
 	@echo "LD $@"
 	$(COMPILE.o) $^ -o $@ $(LDLIBS)
-
+# Use	@echo "AR $@"
+#		$(ARCHIVE.o) $@ $^
+# instead when building a static library
 clean:
 	$(foreach dir, $(LIBDIRS),\
 		echo "MK $(addprefix -C , $(dir)) $@" && make -C $(dir) $@ ; ):
