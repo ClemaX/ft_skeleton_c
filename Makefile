@@ -13,7 +13,7 @@ OBJDIR = obj
 BINDIR = .
 
 # Library dependencies
-LIBS = $(addprefix $(LIBDIR), )
+LIBS = $(addprefix $(LIBDIR)/, )
 
 LIBDIRS = $(dir $(LIBS))
 LIBINCS = $(addsuffix $(INCDIR), $(LIBDIRS))
