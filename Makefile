@@ -1,40 +1,40 @@
-NAME = skeleton
+NAME := skeleton
 
 # Compiler and linker
-CC = clang
-LD = clang
-AR = ar
+CC := clang
+LD := clang
+AR := ar
 
 # Paths
-SRCDIR = src
-INCDIR = include
-LIBDIR = lib
+SRCDIR := src
+INCDIR := include
+LIBDIR := lib
 
-OBJDIR = obj
-BINDIR = .
+OBJDIR := obj
+BINDIR := .
 
 # Library dependencies
-LIBS = $(addprefix $(LIBDIR)/, )
+LIBS := $(addprefix $(LIBDIR)/, )
 
-LIBDIRS = $(dir $(LIBS))
-LIBINCS = $(addsuffix $(INCDIR), $(LIBDIRS))
-LIBARS = $(notdir $(LIBS))
+LIBDIRS := $(dir $(LIBS))
+LIBINCS := $(addsuffix $(INCDIR), $(LIBDIRS))
+LIBARS := $(notdir $(LIBS))
 
 # Sources
-INCS = $(LIBINCS) $(INCDIR)
-SRCS = $(addprefix $(SRCDIR)/,\
+INCS := $(LIBINCS) $(INCDIR)
+SRCS := $(addprefix $(SRCDIR)/,\
 	main.c\
 )
 
-OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
-DEPS = $(OBJS:.o=.d)
+OBJS := $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
+DEPS := $(OBJS:.o=.d)
 
 # Flags
-CFLAGS = -Wall -Wextra -Werror $(INCS:%=-I%)
+CFLAGS := -Wall -Wextra -Werror $(INCS:%=-I%)
 DFLAGS = -MT $@ -MMD -MP -MF $(OBJDIR)/$*.d
-LDFLAGS = $(LIBDIRS:%=-L%)
-LDLIBS = $(LIBARS:lib%.a=-l%)
-ARFLAGS = -rcus
+LDFLAGS := $(LIBDIRS:%=-L%)
+LDLIBS := $(LIBARS:lib%.a=-l%)
+ARFLAGS := -rcus
 
 # Compiling commands
 COMPILE.c = $(CC) $(DFLAGS) $(CFLAGS) -c
